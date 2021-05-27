@@ -1,0 +1,121 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<div class="container py-4 fadein-effect">
+    <!-- 前言 -->
+    <div class="row justify-content-center align-items-center my-5" style="max-height: 32vh;">
+        <div class="col-6 mx-4 rounded-ct shadow-sm" style="background: #ffffff80; min-height: 24vh; max-height: 28vh; display: flex; align-items: top; overflow: scroll;">
+            <div class="mx-5 my-4">
+                <h6 style="font-size: 1.1em;" class="py-2 text-dark">各位同學大家好：</h6>
+                <p style="font-size: 0.95em; line-height: 1.6em; color: #383838;">如果您有發現到網站內的漏洞🐞、操作不流暢的體驗，亦或是想給予我們建議等等，都歡迎利用下方表單提供您寶貴的意見✍️，我們會虛心接受及檢討改進，並以最快速度回信📪給您！謝謝 ( ´▽｀)</p>
+            </div>
+        </div>
+    </div>
+    <!-- 信箱 -->
+    <div class="row justify-content-center align-items-center my-5" style="max-height: 32vh;">
+        <div class="col-6 mx-4 py-5 justify-content-center rounded-ct shadow-sm" style="background: #ffffff80; max-height: 25vh; min-height: 24vh; display: flex; align-items: center;">
+            <form autocomplete="off" id="form-email" class="my-3" style="width: 42vw;" method="get">
+                <div class="form-floating mb-2 mx-4" style="color: #888888; font-size: 0.9em;">
+                    <input type="text" id="name" class="form-control form-control-sm border-0 border-bottom bg-transparent" id="floatingName" placeholder="你的名字:" style="border-radius: 0; padding-top: 2.8em;">
+                    <label id="fname" style="color: #505050;" for="floatingName" style="bottom: 5px;">你的名字:</label>
+                </div>
+                <div class="form-floating mb-3 mx-4" style="color: #888888; font-size: 0.9em;">
+                    <input type="text" id="email" class="form-control form-control-sm border-0 border-bottom bg-transparent" id="floatingEmail" placeholder="郵件地址:" style="border-radius: 0; padding-top: 2.8em;">
+                    <label id="femail" style="color: #505050;" for="floatingEmail">郵件地址:</label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 表單 -->
+    <div class="row justify-content-center align-items-center my-5">
+        <div class="col-6 mx-4 justify-content-center rounded-ct shadow-sm" style="background: #ffffff80; min-height: 22vh; display: flex; align-items: center;">
+            <form autocomplete="off" id="form-recommend" class="my-3" style="width: 42vw;" method="get">
+                <div class="form-floating mb-3 mx-4" style="color: #888888; font-size: 0.9em;">
+                    <textarea type="text" id="msg" style="min-height: 10vw; padding-top: 2.4em; border-radius: 0;" class="form-control form-control-sm border-0 border-bottom bg-transparent" id="floatingRecommend" placeholder="姓名"></textarea>
+                    <label id="fmsg" style="color: #505050;" for="floatingRecommend">想說些什麼嗎，打在這裡吧...</label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-center mx-3 my-5">
+        <div class="col-3 form-group pt-4 " style="border-radius: 18px;">
+            <input onclick="submitAll()" id="submit" name="submit" type="button" class="form-control btn btn-info btn-md shadow px-5 border-0 text-white" value="送出表單" style="background: #72C2C6; border-radius: 2em; font-size: 0.9em; padding: 12px; width: 20vw;">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function validateEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    function submitAll() {
+        method = "post";
+
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var msg = document.getElementById("msg").value;
+
+        if (name == "" || email == "" || msg == "") {
+            if (name == "") {
+                document.getElementById("name").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-invalid border-danger");
+                document.getElementById("fname").setAttribute("style", "color: #dc3545;");
+            } else {
+                document.getElementById("name").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-valid border-success");
+                document.getElementById("fname").setAttribute("class", "text-success");
+            }
+            if (email == "") {
+                document.getElementById("email").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-invalid border-danger");
+                document.getElementById("femail").setAttribute("style", "color: #dc3545;");
+            } else {
+                document.getElementById("email").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-valid border-success");
+                document.getElementById("femail").setAttribute("class", "text-success");
+            }
+            if (msg == "") {
+                document.getElementById("msg").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-invalid border-danger");
+                document.getElementById("fmsg").setAttribute("style", "color: #dc3545;");
+            } else {
+                document.getElementById("msg").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-valid border-success");
+                document.getElementById("fmsg").setAttribute("class", "text-success");
+            }
+            alert("# 請確實填寫每一格欄位");
+        } else {
+            if (!(validateEmail(email))) {
+                document.getElementById("email").setAttribute("class", "form-control form-control-sm border-0 border-bottom bg-transparent is-invalid border-danger");
+                document.getElementById("femail").setAttribute("style", "color: #dc3545;");
+                alert("# 您的信箱格式有誤");
+            } else {
+                request = {'name':name, 'email':email, 'msg':msg};
+
+                // 建立一個模擬表單，送出post request
+                var form = document.createElement("form");
+                form.setAttribute("method", method);
+                form.setAttribute("action", 'contact');
+
+                for(var key in request) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", request[key]);
+
+                    form.appendChild(hiddenField);
+                }
+                document.body.appendChild(form);    // Not entirely sure if this is necessary
+                form.submit();
+            }
+        }
+    }
+
+    function alertMsg(isComplete) {
+        if (isComplete == true) {
+            alert("# 傳送成功");
+        }
+    }
+
+    alertMsg({{sendComplete}});
+
+</script>
+{% endblock %}

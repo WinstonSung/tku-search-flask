@@ -1,0 +1,64 @@
+{% include 'base.html' %}
+
+{% block content %}
+<div class="container text-center" style="height: 640px; max-height: 640px; padding-top: 10vh; padding-left: 16%; padding-right: 16%; ">
+  <div style="padding-top: 1vh;">
+      <img src="/static/svg/whoarewe.svg" style="height: 20vw;">
+  </div>
+  <h3 class="m-3">&nbsp;這是什麼網站？</h3>
+  <p class="py-3 m-3" style="line-height: 2em; font-size: 1.05em; letter-spacing: 0.6px;">
+      我們主要提供淡江大學的同學<a href="#" style="color: #379ea3;">比對本系畢業缺修學分</a>、<a href="history" style="color: #379ea3;">查詢歷史成績</a>，以及<a href="forum" style="color: #379ea3;">課程討論區</a>的功能。
+  </p>
+  <a href="login" class="btn my-4 px-5 py-2 rounded-ct rounded-pill start-now" style="font-size: 0.9em;">立即開始</a>
+</div>
+
+<div class="container text-center" style="height: 52rem; padding-top: 14rem; padding-left: 10%; padding-right: 10%; ">
+    <h3 class="pb-4">&nbsp;如何做到？</h3>
+    <div class="row py-5">
+        <div class="col-sm-4 py-2">
+            <img src="/static/png/pycharm.png" class="img-fluid p-4 m-2" style="height: 18vh;" alt="Image">
+            <div class="mx-2">
+                <h6><strong style="font-size: 1.2em;">PyCharm</strong></h6><hr class="mx-5"/>
+                <p class="px-3">PyCharm支援Web開發框架，例如Tornado、Flask和Django等等⋯⋯</p>
+            </div>
+        </div>
+        <div class="col-sm-4 py-2">
+            <img src="/static/png/flask.png" class="img-fluid p-4 m-2" style="height: 18vh;" alt="Image">
+            <div class="mx-2">
+                <h6><strong style="font-size: 1.2em;">Flask</strong></h6><hr class="mx-5"/>
+                <p class="px-4">Flask被稱為「微框架」，內建開發伺服器，可依需求來擴充套件。<p>
+            </div>
+        </div>
+        <div class="col-sm-4 py-2">
+            <img src="/static/png/mysql.png" class="img-fluid p-2 m-2" style="height: 18vh;" alt="Image">
+            <div class="mx-2">
+                <h6><strong style="font-size: 1.2em;">MySQL</strong></h6><hr class="mx-5"/>
+                <p class="px-4">MySQL具有開源的特點及可圖形化管理介面的軟體，支援MacOS。<p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function MouseWheel (e) {
+            e = e || window.event;
+            if ( e.wheelDelta <= 0 || e.detail > 0) {
+
+            } else {
+
+            }
+        }
+
+        // hook event listener on window object
+        if ('onmousewheel' in window) {
+            window.onmousewheel = MouseWheel;
+        } else if ('onmousewheel' in document) {
+            document.onmousewheel = MouseWheel;
+        } else if ('addEventListener' in window) {
+            window.addEventListener("mousewheel", MouseWheel, false);
+            window.addEventListener("DOMMouseScroll", MouseWheel, false);
+        }
+    </script>
+{% endblock %}

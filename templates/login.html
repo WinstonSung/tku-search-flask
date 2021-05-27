@@ -1,0 +1,117 @@
+{% include 'base.html' %}
+
+{% block content %}
+    <div class="container py-4">
+        <div class="row justify-content-center align-items-center">
+            <div id="card-form" class="rounded-ct shadow-sm col-md-4 pt-5" style="background: #ffffffbb; border-radius: 16px; min-height: 83vh; max-height: 113vh; display: block; ">
+                <div class="form-content">
+                    <div id="login-box" class="col-md-12">
+                        <form autocomplete="off" id="login-form" class="form" method="post">
+                            <h3 class="text-center text-info py-2 pb-3 text-dark" style="font-size: 1.5em; letter-spacing: 2px;">登入</h3>
+                            <div class="form-group pt-3 px-2 mx-5">
+                                <input type="text" name="username" id="username" class="form-control px-3 border-0 border-bottom bg-transparent" placeholder="學號 Account id" style="border-radius: 0; font-size: 0.9em; padding: 10px; color: #3f3f3f;">
+                            </div>
+                            <div class="form-group py-4 px-2 mx-5">
+                                <input type="password" name="password" id="password" class="form-control px-3 border-0 border-bottom bg-transparent" placeholder="密碼 Password" style="border-radius: 0; font-size: 0.9em; padding: 10px; color: #3f3f3f;">
+                            </div>
+                            <div class="form-group pt-4 px-5" style="border-radius: 18px;">
+                                <input id="form-submit" type="submit" name="submit" onclick="changeToLoading" class="form-control btn btn-info btn-md shadow-sm px-4 border-0 text-white" value="爬取成績" style="background: #72C2C6; border-radius: 2em; font-size: 0.9em; padding: 10px;">
+                            </div>
+                            <div id="form-warning" class="text-right pt-4">
+                                <p align="center" href="#" class="px-5 py-2" style="font-size: 0.85em; color: #a8a8a8; line-height: 2em;">
+                                    點擊「爬取成績」後，網站會自動前往<br>
+                                    <a href="https://sso.tku.edu.tw/aissinfo/emis/TMW0000.aspx" target="_blank">淡江校務行政資訊查詢系統</a><br>
+                                    使用您填入的帳號密碼<b style="color: #888888;">抓取您的成績資料</b><br><br>
+                                    < 注意 (｡･ω･｡)ﾉ ><br>
+                                    我們並<b style="color: #888888;">不會儲存您的帳號密碼及任何個人資料</b><br>
+                                    登出後將會自動刪除所有紀錄
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="card-loading" class="shadow-sm col-md-4 pt-5" style="background: #ffffffbb; border-radius: 16px; min-height: 83vh; display: none; ">
+                <div class="loading-content">
+                    <div class="d-flex justify-content-center" style="padding-top: 10vh;">
+                        <div class="spinner-border" role="status" style="color:#72C2C6; width: 6em; height: 6em; -webkit-animation: spin 1s linear infinite; animation: spin 1.6s linear infinite;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="loading justify-content-center px-5 py-5" style="user-select: none;">
+                        <div class="loading__letter">&emsp;</div>
+                        <div class="loading__letter">L</div>
+                        <div class="loading__letter">o</div>
+                        <div class="loading__letter">a</div>
+                        <div class="loading__letter">d</div>
+                        <div class="loading__letter">i</div>
+                        <div class="loading__letter">n</div>
+                        <div class="loading__letter">g</div>
+                        <div class="loading__letter">.</div>
+                        <div class="loading__letter">.</div>
+                        <div class="loading__letter">.</div>
+                    </div>
+                    <div id="loading-warning" class="text-right pt-1">
+                        <p align="center" href="#" class="px-5 py-5" style="font-size: 0.85em; color: #a8a8a8; line-height: 2em;">
+                            由於資料皆由後台以爬蟲進行<br>
+                            因此每一次登入可能需要5~10秒來進行爬取工作<br>
+                            請各位內心等候，謝謝<br><br>
+                            (((o(*ﾟ▽ﾟ*)o)))
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var form = document.getElementById("form-submit");
+
+        document.getElementById("form-submit").addEventListener("click", function () {
+            document.getElementById("card-form").style.display = "none";
+            document.getElementById("card-loading").style.display = "block";
+
+            sid = document.getElementById("username").value;
+            spw = document.getElementById("password").value;
+
+            if (sid == "" || spw == "") {
+                alert("# 請填入完整學號及密碼");
+                document.getElementById("card-form").style.display = "block";
+                document.getElementById("card-loading").style.display = "none";
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
+                window.event.returnValue = false;
+
+                if (sid == "") {
+                    document.getElementById("username").setAttribute("class", "form-control px-3 border-0 border-bottom bg-transparent is-invalid border-danger");
+                } else {
+                    document.getElementById("username").setAttribute("class", "form-control px-3 border-0 border-bottom bg-transparent is-valid border-success");
+                }
+                if (spw == "") {
+                    document.getElementById("password").setAttribute("class", "form-control px-3 border-0 border-bottom bg-transparent is-invalid border-danger");
+                } else {
+                    document.getElementById("password").setAttribute("class", "form-control px-3 border-0 border-bottom bg-transparent is-valid border-success");
+                }
+            } else if (sid.match(/\d{9}/) == null) {
+                alert("# 學號應為9位數字");
+                document.getElementById("card-form").style.display = "block";
+                document.getElementById("card-loading").style.display = "none";
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
+                window.event.returnValue = false;
+            } else {
+                encry_id = document.getElementById("username").value;
+                encry_pw = document.getElementById("password").value;
+
+                document.getElementById("username").value = btoa(encry_id);
+                document.getElementById("password").value = btoa(encry_pw);
+
+                var submit_btn =  document.getElementById("form-submit");
+                submit_btn.formAction = '/login';
+            }
+        });
+    </script>
+{% endblock %}

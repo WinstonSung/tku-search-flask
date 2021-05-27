@@ -1,0 +1,198 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+    <div class="container py-4">
+        <div class="row justify-content-center align-items-center">
+
+            <div class="col-md-4 px-2 py-4 bg-transparent" style="border-radius: 16px; font-size: 0.9em; color: #333333; ">
+                <div class="card border-0 rounded-ct shadow-sm" style="background: #ffffff;">
+                    <div style="background: #72C2C6; border-top-left-radius: 3vh; border-top-right-radius: 3vh; color: white;">
+                        <div class="row card-header text-left border-0 bg-transparent m-2 mx-3" style="font-size: 1.05em;">
+                            淡江大學｜{{ liberal['department'] }}｜{{ liberal['name'] }}
+                        </div>
+                    </div>
+                    <div class="card-body border-0 bg-transparent">
+                        <div class="row g-0">
+                            <div class="col-md-4 align-self-center text-center">
+                                <img class="mb-2" src="static/animals/{{ avatar }}.png" alt="avatar" style="max-height: 10vh;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row g-0">
+                                    <div class="card-body" style="letter-spacing: 1px;">
+                                        <p class="card-text">學號 <small>StudentID</small> ： {{ liberal['student_id'] }}</p>
+                                        <p class="card-text">累積學分 <small>Total</small> ： {{ requirements_list['total_credits'] }}學分</p>
+                                        <p class="card-text">入學年 <small>From</small> ： 09/{{ liberal['requirement']['entered_year']|int + 1911 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4" style="width: 68%; color: #888888;">
+
+            <!-- 本系必修/選修 ＆ 通識課程 -->
+            <div class="row col-sm-9 py-4 justify-content-center">
+                <div class="card col-sm-5 px-0 mx-4 rounded-ct shadow-sm">
+                    <div style="background: #72C2C6; border-top-left-radius: 3vh; border-top-right-radius: 3vh; color: white;">
+                        <div class="card-header text-center border-0 bg-transparent m-2 mx-3" style="font-size: 0.95em; letter-spacing: 1px;">
+                            系上必選修學分｜<small>{{ requirements_list['required_credit'] + requirements_list['elective_credit'] }}學分</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush border-0" style="font-size: 0.9em; letter-spacing: 1px;">
+                            <div class="row px-3">
+                                <div class="col-sm mx-2">
+                                    <li class="list-group-item border-0" style="color: #555555;">本系必修 ： <b>{{ requirements_list['required_credit'] }}</b></li>
+                                    <li class="list-group-item border-0" style="color: #555555;">累積必修 ： <b class="text-success">{{ requirements_list['accumulated_required'] }}</b></li>
+                                    <li class="list-group-item border-0" style="color: #555555;">缺修必修 ： <b class="text-danger">{{ requirements_list['required_credit'] - requirements_list['accumulated_required'] }}</b></li>
+                                </div>
+                                <div style="z-index: 999; border-left: 0.4px solid #eaeaea; height: 50%; position: absolute; left: 50%; top: 38%;"></div>
+                                <div class="col-sm">
+                                    <li class="list-group-item border-0" style="color: #555555;">最低選修 ： <b>{{ requirements_list['elective_credit'] }}</b></li>
+                                    <li class="list-group-item border-0" style="color: #555555;">累積選修 ： <b class="text-success">{{ requirements_list['accumulated_elective'] }}</b></li>
+                                    <li class="list-group-item border-0" style="color: #555555;">缺修選修 ： <b class="text-danger">{{ requirements_list['elective_credit'] - requirements_list['accumulated_elective'] }}</b></li>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-sm-5 px-0 mx-4 rounded-ct shadow-sm">
+                    <div style="background: #72C2C6; border-top-left-radius: 3vh; border-top-right-radius: 3vh; color: white;">
+                        <div class="card-header text-center border-0 bg-transparent m-2 mx-3" style="font-size: 0.95em; letter-spacing: 1px;">
+                            通識核心課程｜<small>14學分、每學門最低2學分</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush border-0" style="font-size: 0.9em; letter-spacing: 1px;">
+                            <div class="row px-2">
+                                <div class="col-sm-8">
+                                    <li class="list-group-item border-0" style="color: #555555;">人文學門 (L, P, V, M)：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">社會學門 (T, R, W, S)：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">科學學門 (O, Z, U)：</li>
+                                </div>
+                                <div class="col-sm-4" style="text-align: right;">
+                                    {% if liberallist['humanities'] < 2 %}
+                                    <li class="list-group-item border-0 text-danger">({{ liberallist['humanities'] }}/2)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-success">({{ liberallist['humanities'] }}/2)</li>
+                                    {% endif %}
+                                    {% if liberallist['sociology'] < 2 %}
+                                    <li class="list-group-item border-0 text-danger">({{ liberallist['sociology'] }}/2)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-success">({{ liberallist['sociology'] }}/2)</li>
+                                    {% endif %}
+                                    {% if liberallist['science'] < 2 %}
+                                    <li class="list-group-item border-0 text-danger">({{ liberallist['science'] }}/2)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-success">({{ liberallist['science'] }}/2)</li>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 基本知能課程 ＆ 課外活動 -->
+            <div class="row col-sm-9 py-4 pb-5 justify-content-center">
+                <div class="card col-sm-5 px-0 mx-4 rounded-ct shadow-sm">
+                    <div style="background: #72C2C6; border-top-left-radius: 3vh; border-top-right-radius: 3vh; color: white;">
+                        <div class="card-header text-center border-0 bg-transparent m-2 mx-2" style="font-size: 0.95em; letter-spacing: 1px;">
+                            基本知能課程｜<small>12學分</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush border-0" style="font-size: 0.9em; letter-spacing: 1px;">
+                            <div class="row px-3">
+                                <div class="col-sm-8">
+                                    <li class="list-group-item border-0" style="color: #555555;">課外活動與團隊發展 (K)：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">中國語文能力表達：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">外國語文學門 (Q)：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">大學學習 (N)：</li>
+                                </div>
+                                <div class="col-sm-4" style="text-align: right;">
+                                    {% if basic_course['club_learning'] == 1 %}
+                                    <li class="list-group-item border-0 text-success">({{ basic_course['club_learning'] }}/1)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-danger">({{ basic_course['club_learning'] }}/1)</li>
+                                    {% endif %}
+
+                                    {% if basic_course['chinese_lang'] == 2 %}
+                                    <li class="list-group-item border-0 text-success">({{ basic_course['chinese_lang'] }}/2)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-danger">({{ basic_course['chinese_lang'] }}/2)</li>
+                                    {% endif %}
+
+                                    {% if basic_course['foreign_lang'] == 8 %}
+                                    <li class="list-group-item border-0 text-success">({{ basic_course['foreign_lang'] }}/8)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-danger">({{ basic_course['foreign_lang'] }}/8)</li>
+                                    {% endif %}
+
+                                    {% if basic_course['college_learn'] == 1 %}
+                                    <li class="list-group-item border-0 text-success">({{ basic_course['college_learn'] }}/1)</li>
+                                    {% else %}
+                                    <li class="list-group-item border-0 text-danger">({{ basic_course['college_learn'] }}/1)</li>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card col-sm-5 px-0 mx-4 rounded-ct shadow-sm" style="height: 26.5vh;">
+                    <div style="background: #72C2C6; border-top-left-radius: 3vh; border-top-right-radius: 3vh; color: white;">
+                        <div class="card-header text-center border-0 bg-transparent m-2 mx-3" style="font-size: 0.95em; letter-spacing: 1px;">
+                            課外活動與團隊發展（K）
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush border-0" style="font-size: 0.9em; letter-spacing: 1px;">
+                            <div class="row px-2">
+                                <div class="col-sm-8">
+                                    <li class="list-group-item border-0" style="color: #555555;">社團學習實作－<b>入門</b>課程 ：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">社團學習實作－活動<b>參與</b> ：</li>
+                                    <li class="list-group-item border-0" style="color: #555555;">社團學習實作－活動<b>執行</b> ：</li>
+                                </div>
+                                <div class="col-sm-4" style="text-align: right;">
+                                    {% if "無成績" in clublearning['basic_course']|string %}
+                                    <li class="list-group-item border-0 text-danger">{{ clublearning['basic_course'] }}</li>
+                                    {% else %}
+                                        {% if clublearning['basic_course']|int >= 60 %}
+                                        <li class="list-group-item border-0 text-success">{{ clublearning['basic_course'] }}分</li>
+                                        {% else %}
+                                        <li class="list-group-item border-0 text-danger">{{ clublearning['basic_course'] }}分</li>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if "未完成" in clublearning['event_engage'] %}
+                                    <li class="list-group-item border-0 text-danger">未完成</li>
+                                    {% else %}
+                                        {% if "通過" in clublearning['event_engage'] %}
+                                        <li class="list-group-item border-0 text-success">{{ clublearning['event_engage'] }}</li>
+                                        {% else %}
+                                        <li class="list-group-item border-0 text-danger">{{ clublearning['event_engage'] }}</li>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if "未完成" in clublearning['event_launch'] %}
+                                    <li class="list-group-item border-0 text-danger">未完成</li>
+                                    {% else %}
+                                        {% if "通過" in clublearning['event_launch'] %}
+                                        <li class="list-group-item border-0 text-success">{{ clublearning['event_launch'] }}</li>
+                                        {% else %}
+                                        <li class="list-group-item border-0 text-danger">{{ clublearning['event_launch'] }}</li>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                    <small class="mx-4 my-4" style="color: #666666; text-align: right;">資料更新時間：{{ liberal['last_modified'] }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% set entered_year = grades['requirement']['entered_year']|int %}
+
+{% include 'base.html' %}
+
+{% block main_content %}
+  <div class="container py-4">
+    <div class="row justify-content-center align-items-center">
+      {% for year in range(entered_year, 110) %}
+      <div class="col-md-11 px-5 py-4 bg-transparent" style="border-radius: 16px; font-size: 0.9em; color: #333333; ">
+        <div class="card bg-transparent border-0 mx-5 my-1">
+          <div class="academic-year card-item pb-1 h6" style="font-size: 1.1em; color: #303030;">
+            <h5>
+              <span class="badge rounded-pill px-3 py-2" style="background: #72C2C6; ">
+                {{ year }}學年
+              </span>
+            </h5>
+          </div>
+          <div class="card-body px-2 py-2">
+            <ul class="nav d-fix justify-content-around" style="font-size: 1em;">
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">學期</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">開課單位</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">科目代號</span>
+              <span class="col-sm-4 text-sm-left align-self-center px-3" href="#">課程名稱</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">群別</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">必選修</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">學分</span>
+              <span class="col-sm-1 text-sm-center align-self-center" href="#">成績</span>
+            </ul>
+          </div>
+        </div>
+        {% for index in range(grades['grades']|length) %}
+          {% if year|string in grades['grades'][index]['academic_year']|string %}
+            {% set grade = grades['grades'][index] %}
+            <div class="card border-0 mx-5 my-3 rounded-ct shadow-sm" style="background: #ffffffcc;">
+              <div class="card-body px-2 py-2">
+                <ul class="nav d-fix justify-content-around">
+                  {% if 1 == grade['semester'] %}
+                  <span class="col-sm-1 text-sm-center align-self-center grade-cell" href="#">上</span>
+                  {% elif 2 == grade['semester'] %}
+                  <span class="col-sm-1 text-sm-center align-self-center grade-cell" href="#">下</span>
+                  {% else %}
+                  <span class="col-sm-1 text-sm-center align-self-center grade-cell" href="#">{{ grade['semester'] }}</span>
+                  {% endif %}
+                  <span class="col-sm-1 text-sm-center align-self-center line-clamp-limit-2 px-2" href="#" title="{{ grade['course_dpm_abbr'] }}">{{ grade['course_dpm_abbr'] }}</span>
+                  <span class="col-sm-1 text-sm-center align-self-center line-clamp-limit-1" href="#">{{ grade['course_id'] }}</span>
+                  <span class="col-sm-4 text-sm-left align-self-center line-clamp-limit-2" style="padding-left: 0.9rem; padding-right: 0px;">{{ grade['course_name'] }}<br>{{ grade['course_name_en'] }}</span>
+                  {% if "null" in grade['course_group'] %}
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#">-</span>
+                  {% else %}
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#">{{ grade['course_group'] }}</span>
+                  {% endif %}
+                  <span class="col-sm-1 text-sm-center align-self-center line-clamp-limit-1" href="#">{{ grade['is_required'] }}</span>
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#">{{ grade['course_units'] }}</span>
+                  {% if "通過" in grade['grade']|string or "抵免" in grade['grade']|string %}
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#" style="color: #17B542;"><strong>{{ grade['grade'] }}</strong></span>
+                  {% elif grade['grade']|int >= 60 %}
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#" style="color: #17B542;"><strong>{{ grade['grade'] }}</strong></span>
+                  {% else %}
+                  <span class="col-sm-1 text-sm-center align-self-center" href="#" style="color: #FF3636;"><strong>{{ grade['grade'] }}</strong></span>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

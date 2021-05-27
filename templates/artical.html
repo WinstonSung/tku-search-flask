@@ -1,0 +1,51 @@
+{% include 'base.html' %}
+
+{% block main_content %}
+<div class="container py-4 fadein-effect">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-8 px-5 py-3 mt-4 mb-2 bg-transparent text-center" style="border-radius: 16px; font-size: 0.8em; color: #333333; ">
+            <span class="text-white rounded-pill px-2 py-1 mx-2" style="user-select: none; background: #72C2C6;"> # {{ course['course_dpm_id'] }} </span>
+            <span class="text-white rounded-pill px-2 py-1 mx-2" style="user-select: none; background: #72C2C6;"> # {{ course['course_dpm_abbr'] }} </span>
+            <span class="text-white rounded-pill px-2 py-1 mx-2" style="user-select: none; background: #72C2C6;"> # {{ course['is_required'] }} </span>
+        </div>
+        <div class="col-md-8 px-5 py-3 my-0 bg-transparent text-center" style="border-radius: 16px; font-size: 0.92em; color: #333333; ">
+            <h5><strong style="font-family: Microsoft JhengHei;">{{ course['course_name'] }} </strong> {{ course['course_name_en'] }} </h5>
+        </div>
+    </div>
+
+    {% for comment in comments %}
+    <div class="row my-4 justify-content-center align-items-center" style="margin-left: 24%; margin-right: 24%; ">
+        <div class="card rounded-ct shadow-sm border-0" style="background: #ffffffcc; width: 40vw;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h6 class="card-title" style="font-size: 0.9em; color: #333333; letter-spacing: 1px;"><img src="/static/animals/{{ comment['icon_img'] }}.png" style="height: 2rem; padding-right: 1rem; margin-bottom: 0.2rem;"/>{{ comment['student_id'][:4] }}***{{ comment['student_id'][-2:] }} 說：</h6>
+                    </div>
+                    <div class="col-sm-6" style="text-align: right;">
+                        <h6 class="card-title" style="font-size: 0.8em; margin-top: 0.24em; color: #aaaaaa; letter-spacing: 1px;">{{ comment['establish'] }}</h6>
+                    </div>
+                </div>
+                <p class="card-text px-4 mx-3 my-2" style="color:#505050; font-size: 0.94rem; line-height: 1.8em; letter-spacing: 0.8px;">{{ comment['message'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="row my-5 justify-content-center align-items-center" style="margin-left: 24%; margin-right: 24%; position: relative;">
+        <div class="card rounded-ct rounded-pill shadow-sm border-0 justify-content-center" style="background: #ffffffcc; width: 40vw; height: 7.2vh;">
+            <div class="card-body">
+                <form method="post" class="row">
+                    <div class="col-sm-10">
+                        <input autocomplete="off" name="comment" class="form-control form-control-sm border-0 bg-transparent" type="text" placeholder="寫下您的評論吧..."/>
+                    </div>
+                    <div class="col-sm-2">
+                        <input class="comment-submit form-control form-control-sm border-0 bg-transparent" type="submit" value="送出" style="letter-spacing: 1px; color: #72C2C6;"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

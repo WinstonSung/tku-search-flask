@@ -1,0 +1,141 @@
+{% set list_len = courses|length %}
+{% set min_year = years[0]|int %}
+{% set max_year = years[1]|int %}
+
+{% include 'base.html' %}
+
+{% block search_bar %}
+<div class="container px-5 pt-5">
+    <form id="search" action="forum" method="POST">
+        <div class="row justify-content-sm-center col-md-12 px-2">
+            <div class="col-md">
+                <div class="form-label">
+                    <input id="key" autocomplete="off" onchange="submitSearch()" type="text" class="form-control rounded-pill bg-white px-5 border-0 shadow-sm" placeholder="查詢教授或課程名稱..." style="height: 6vh; font-size: 0.9em; background: url(static/search_black_24dp.svg) no-repeat scroll 1vw 1.5vh;" name="key">
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-label">
+                    <select id="year" onchange="submitSelect()" class="form-select rounded-pill px-3 border-0 shadow-sm" style="height: 6vh; font-size: 0.9em; color: #888888;" name="year">
+                        <option value="null">請選擇學年度...</option>
+                        <option value="all">所有學年度</option>
+                        {% for year in range(max_year, min_year-1, -1) %}
+                            {% if year == y|string %}
+                                <option selected="selected" value="{{ year }}">{{ year }}年</option>
+                            {% else %}
+                                <option value="{{ year }}">{{ year }}年</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-label">
+                    <select id="semester" onchange="submitSelect()" class="form-select rounded-pill px-3 border-0 shadow-sm" style="height: 6vh; font-size: 0.9em; color: #888888;" name="year">
+                        <option value="null">請選擇上下學期...</option>
+                        <option value="all">所有學期</option>
+                        <option value="1">上學期</option>
+                        <option value="2">下學期</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-label">
+                    <select id="dpm" onchange="submitSelect()" class="form-select rounded-pill px-3 border-0 shadow-sm" style="height: 6vh; font-size: 0.9em; color: #888888;" name="dpm">
+                        <option value="null">請選擇課程...</option>
+                        <option value="all">所有學院</option>
+                        <option value="TA">TA 文學院</option>
+                        <option value="TD">TD 教育學院</option>
+                        <option value="TE">TE 工學院</option>
+                        <option value="TF">TF 外國語文學院</option>
+                        <option value="TG">TG 共同科(榮譽學程、體育課...)</option>
+                        <option value="TL">TL 商管學院</option>
+                        <option value="TN">TN 共同科(通識、外國語文...)</option>
+                        <option value="TQ">TQ 全球發展學院</option>
+                        <option value="TR">TR 國際事務學院</option>
+                        <option value="TS">TS 理學院</option>
+                        <option value="ZA">ZA 國際班</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+<hr class="my-4" style="width: 76%; margin: auto; color: #aaaaaa;" />
+
+{% block main_content %}
+
+<div class="container px-5 py-3 pb-5">
+    <div class="row justify-content-sm-center col-md-12" style="margin: auto; animation: fadein 0.4s ease;">
+
+        {% if list_len == 0 %}
+            <p class="text-center">{{ msg }}</p>
+        {% else %}
+            {% for index in range(list_len) %}
+            <div class="card text-dark mb-4 mx-3 rounded-ct shadow-sm" style="max-width: 19rem; border: 0px; background: #ffffffdd;">
+                <div class="card-header bg-transparent px-1 py-2">
+                    <span class="badge text-white rounded-pill px-2 py-1 mx-auto" style="user-select: none; background: #72C2C6;"># {{ courses[index][1] }}年</span>
+                    <span class="badge text-white rounded-pill px-2 py-1 mx-auto" style="user-select: none; background: #72C2C6;"># {{ courses[index][0][:5] }}</span>
+                    <span class="badge text-white rounded-pill px-2 py-1 mx-auto" style="user-select: none; background: #72C2C6;"># {{ courses[index][11] }}學分</span>
+                </div>
+                <div class="card-body px-2 pt-3 pb-1">
+                    <h6 class="card-title line-clamp-limit-1" style="font-size: 1em;">{{ courses[index][4] }}：{{ courses[index][5] }}</h6>
+                    <p class="card-text my-1 py-0 line-clamp-limit-1" style="font-size: 0.8em;">{{ courses[index][6] }}</p>
+                </div>
+                {% set id = courses[index][0] %}
+                <div class="card-footer row bg-transparent text-center px-2 py-0 my-1">
+                    <button class="col-sm btn f-btn" onclick="like('{{ id }}')">
+                        <i id="{{id}}-icon" class="material-icons" style="display:inline; vertical-align: middle; font-size: 17px;">thumb_up</i>
+                        <span id="{{id}}-cnt" style="display:inline; float: center; font-size: 0.9em;">{{ courses[index][12] }}</span>
+                    </button>
+                    <button class="col-sm btn f-btn">
+                        <i class="material-icons" style="display:inline; vertical-align: middle; font-size: 17px;">thumb_down</i>
+                        <span style="display:inline; float: center; font-size: 0.9em;">{{ courses[index][13] }}</span>
+                    </button>
+                    <button class="col-sm btn f-btn" onclick="comment('{{ id }}')">
+                        <i class="material-icons" style="display:inline; vertical-align: middle; font-size: 17px;">textsms</i>
+                        <span style="display:inline; float: center; font-size: 0.9em;">{{ courses[index][14] }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        function submitSelect() {
+            var v_year = document.getElementById('year').value;
+            var v_dpm = document.getElementById('dpm').value;
+            var v_semester = document.getElementById('semester').value;
+
+            if (v_year != "null" && v_dpm != "null" && v_semester != "null") {
+                location.href = 'forum?academic_year='+v_year+'&semester='+v_semester+'&dpm='+v_dpm ;
+            }
+        }
+
+        function like(id) {
+            document.getElementById(id+'-icon').style.color = '#72C2C6';
+            document.getElementById(id+'-cnt').style.color = '#72C2C6';
+
+            var cnt = Number(document.getElementById(id+'-cnt').innerHTML);
+            cnt = cnt + 1;
+            document.getElementById(id+'-cnt').innerHTML = cnt;
+        }
+
+        function comment(id) {
+            var idcode = "";
+            for (i = 0; i < id.length; i++) {
+                idcode += id.charCodeAt(i);
+            }
+            location.href = 'forum/' + idcode;
+        }
+
+        function submitSearch() {
+            alert(document.getElementById('key').value);
+        }
+    </script>
+{% endblock %}

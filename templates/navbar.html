@@ -1,0 +1,40 @@
+<div class="container-fluid" style="padding: 0;">
+    <div style="background: #72C2C6; height: 6px;"></div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="min-height: 10vh; border-bottom-left-radius: 2rem; border-bottom-right-radius: 2rem; background: #ffffffaa;">
+    <div class="container-fluid" style="max-width: 90%;">
+        <a class="navbar-brand px-4" href="/">
+            <img class="img-logo" style="height: 40px;" src="/static/tku.png" />
+        </a>
+        <div class="float-right" id="navbarSupportedContent" style="font-size: 0.9em;">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/history">歷史成績</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/requirements">畢業學分</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/forum">課程評價</a>
+                </li>
+                <li class="nav-item px-3">
+                    <a class="nav-link" href="/contact">聯絡我們</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% if session['is_login'] == 1 %}
+    <a href="/logout">
+        <button class="shadow logout-btn" style="position: fixed; right: 56px; bottom: 56px; width: 60px; height: 60px; border-radius: 30px; border: 0px;">
+            <i class="material-icons logout-icon" style="font-size:28px; padding-left: 6px; padding-top: 3px;">logout</i>
+        </button>
+    </a>
+{% else %}
+    <a href="/login">
+        <button class="shadow logout-btn" style="position: fixed; right: 56px; bottom: 56px; width: 60px; height: 60px; border-radius: 30px; border: 0px;">
+            <i class="material-icons login-icon" style="font-size:28px; padding-right: 4px; padding-top: 2px;">login</i>
+        </button>
+    </a>
+{% endif %}
